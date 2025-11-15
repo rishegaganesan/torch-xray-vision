@@ -24,3 +24,42 @@ export MODEL_NAME=densenet121-res224-all
 python app.py
 
 # Open: http://127.0.0.1:5000
+```
+
+
+## 🧠 REST API — Programmatic Access
+
+In addition to the web-based upload UI, this app provides a simple JSON REST API for programmatic use.
+
+### Endpoint
+- POST /api/predict
+
+### Description
+
+Send a chest X-ray (JPG, PNG, or DICOM) and receive:
+-	Predicted pathologies with probabilities
+- Preprocessing and inference latency metrics
+- A Grad-CAM heatmap overlay (as base64 PNG)
+
+### Example Request (curl)
+
+```bash
+
+curl -X POST http://127.0.0.1:5000/api/predict \
+  -F "file=@/path/to/chest_xray.png"
+
+```
+
+### Example Response
+
+```bash
+
+{
+  "labels": ["Atelectasis", "Cardiomegaly", "Effusion"],
+  "probabilities": {"Atelectasis": 0.14, "Cardiomegaly": 0.03, "Effusion": 0.21},
+  "top_class": "Effusion",
+  "timings_ms": {"preprocess": 25.7, "inference": 63.2},
+  "heatmap_png_base64": "iVBORw0KGgoAAAANSUhEUgAA..."
+}
+
+```
