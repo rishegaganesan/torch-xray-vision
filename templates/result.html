@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="grid">
+  <div class="card">
+    <h2>Results</h2>
+    <table>
+      <thead><tr><th>Label</th><th>Probability</th></tr></thead>
+      <tbody>
+      {% for label, prob in probs %}
+        <tr><td>{{ label }}</td><td>{{ '{:.3f}'.format(prob) }}</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+    <div class="timings">
+      <strong>Timings (ms)</strong> — preprocess: {{ '%.1f'|format(timings.preprocess) }}, inference: {{ '%.1f'|format(timings.inference) }}
+    </div>
+  </div>
+  <div class="card">
+    <h2>Top class: {{ top_class }}</h2>
+    <div class="viewer">
+      <div>
+        <h3>Input</h3>
+        <img src="data:image/png;base64,{{ input_png_b64 }}" alt="input">
+      </div>
+      <div>
+        <h3>Grad-CAM</h3>
+        <img src="data:image/png;base64,{{ heatmap_png_b64 }}" alt="heatmap">
+      </div>
+    </div>
+    <a class="back" href="{{ url_for('index') }}">Analyze another image</a>
+  </div>
+</section>
+{% endblock %}
